@@ -1,0 +1,2661 @@
+#%RAML 1.0
+---
+title: Web Api
+version: v1
+#baseUri: http://innova.vservers.es/InnovaServ/
+baseUri: http://146.255.96.148:8029/
+#baseUri: http://localhost:3017/
+securitySchemes:
+  auth:
+    type: OAuth 2.0
+    describedBy:
+      headers:
+        Authorization:
+          description: |
+            Used to send a valid OAuth 2 access token. Do not use
+            with the "access_token" query string parameter.
+          type: string
+      responses:
+        400:
+          description: |
+            Bad OAuth request (e.g. wrong consumer key, bad nonce, expired timestamp, etc.)
+        401:
+          description: |
+            Bad or expired token. To fix it, re-authenticate the user.
+    settings:
+      authorizationUri: ''
+#     accessTokenUri:  http://innova.vservers.es/InnovaServ/api/oauth2/token
+      accessTokenUri:  http://146.255.96.148:8029/api/oauth2/token
+#     accessTokenUri:  http://localhost:3017/api/oauth2/token
+      authorizationGrants: [password]
+types:
+  UserInfoDTO:
+    displayName: UserInfoDTO
+    type: object
+    properties:
+      Id:
+        required: true
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      UserName:
+        required: true
+        displayName: UserName
+        type: string
+      LastName1:
+        required: true
+        displayName: LastName1
+        type: string
+      LastName2:
+        required: false
+        displayName: LastName2
+        type: string
+      Password:
+        required: false
+        displayName: Password
+        type: string
+      BirthDay:
+        required: false
+        displayName: BirthDay
+        type: datetime-only
+      Email:
+        required: true
+        displayName: Email
+        type: string
+      Role:
+        required: false
+        displayName: Role
+        type: string
+      IdCompany:
+        required: false
+        displayName: IdCompany
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      NameCompany:
+        required: false
+        displayName: NameCompany
+        type: string
+      IdUserCreate:
+        required: false
+        displayName: IdUserCreate
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      Gender:
+        required: true
+        displayName: Gender
+        type: string
+      RegisterType:
+        required: true
+        displayName: RegisterType
+        description: "Es el tipo de registro, es un enumerado : Facebook = 1 , Google = 2, AppMobile = 3"
+        type: string
+      DeviceIdentifier:
+        required: true
+        displayName: DeviceIdentifier
+        type: string
+      Platform:
+        required: true
+        displayName: Platform
+        type: string
+      PlatformVersion:
+        required: true
+        displayName: PlatformVersion
+        type: string
+      DeviceModel:
+        required: true
+        displayName: DeviceModel
+        type: string
+      UserStatus:
+        required: false
+        displayName: UserStatus
+        description: User Status
+        type: integer
+        format: int32
+  CompanyDTO:
+    displayName: RegisterDTO
+    type: object
+    properties:
+      Id:
+        required: false
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      Name:
+        required: true
+        displayName: name
+        type: string
+      CIF:   
+        required: true
+        displayName: CIF
+        type: string
+  RegisterDTO:
+    displayName: RegisterDTO
+    type: object
+    properties:
+      userinfo:
+        required: true
+        displayName: userinfo
+        type: UserInfoDTO
+      password:
+        required: true
+        displayName: password
+        type: string
+  ProductDTO:
+    displayName: MachineDTO
+    type: object
+    properties:
+      Id:
+        required: false
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      ImageURL:
+        required: false
+        displayName: ImageURL
+        type: string
+      Description:
+        required: false
+        displayName: Description
+        type: string
+      InnovaCode:
+        required: false
+        displayName: InnovaCode
+        type: string
+      MinLaneStock:
+        required: false
+        displayName: MinLaneStock
+        type: integer
+        format: int32
+      SaleStock:
+        required: false
+        displayName: SaleStock
+        type: integer
+        format: int32
+      LogicDelete:
+        required: false
+        displayName: LogicDelete
+        type: datetime-only
+      MobileDescription:
+        required: false
+        displayName: MobileDescription
+        type: string
+      IdUserCreate:
+        required: false
+        displayName: IdUserCreate
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdCompany:
+        required: false
+        displayName: IdCompany
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+  AdCampaignMachineDTO:
+    displayName: AdCampaignMachineDTO
+    type: object
+    properties:
+      Id:
+        required: true
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdMachine:
+        required: true
+        displayName: IdMachine
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdCampaign:
+        required: true
+        displayName: IdCampaign
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+  AdCampaignMachineLaneDTO:
+    displayName: AdCampaignMachineLaneDTO
+    type: object
+    properties:
+      Id:
+        required: false
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdAdCampaignProduct:
+        required: false
+        displayName: IdAdCampaignProduct
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdLane:
+        required: false
+        displayName: IdLane
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdAdCampaignMachine:
+        displayName: IdAdCampaignMachine
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      AdCampaignMachineDTO:
+        required: false
+        displayName: AdCampaignMachine
+        type: AdCampaignMachineDTO
+  LaneDTO:
+    displayName: LaneDTO
+    type: object
+    properties:
+      Id:
+        required: false
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      LaneNumber:
+        required: false
+        displayName: LaneNumber
+        type: integer
+        format: int32
+      LaneState:
+        required: false
+        displayName: LaneState
+        type: string
+      IdMachine:
+        displayName: IdMachine
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdProduct:
+        displayName: IdProduct
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      CurrentStock:
+        required: false
+        displayName: CurrentStock
+        type: integer
+        format: int32
+      MaxStock:
+        required: false
+        displayName: MaxStock
+        type: integer
+        format: int32
+      Price:
+        required: false
+        displayName: Price
+        type: number
+        format: double
+      ExpiryProductDate:
+        required: false
+        displayName: ExpiryProductDate
+        type: datetime
+      Producto:
+        required: false
+        displayName: Producto
+        type: ProductDTO
+      ListAsociatedAdCampaigns:
+        required: false
+        displayName: ProductDto
+        type: AdCampaignMachineLaneDTO []
+  ProviderDTO:
+    displayName: ProviderDTO
+    type: object
+    properties:
+      Id:
+        required: false
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      Name:
+        required: false
+        displayName: Name
+        type: string
+      Address:
+        required: false
+        displayName: Address
+        type: string
+      Reference:
+        required: false
+        displayName: Reference
+        type: string
+      IdUserCreate:
+        required: false
+        displayName: IdUserCreate
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdCompany:
+        required: false
+        displayName: IdCompany
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+  MachineDTO:
+    displayName: MachineDTO
+    type: object
+    properties:
+      Id:
+        required: false
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      Name:
+        required: false
+        displayName: Name
+        type: string
+      Reference:
+        required: false
+        displayName: Reference
+        type: string
+      Description:
+        required: false
+        displayName: Description
+        type: string
+      NumberRowLanes:
+        required: false
+        displayName: NumberRowLanes
+        type: integer
+        format: int32
+      NumberColumnLanes:
+        required: false
+        displayName: NumberColumnLanes
+        type: integer
+        format: int32
+      MachineState:
+        required: false
+        displayName: MachineState
+        type: string
+      IdProvider:
+        required: false
+        displayName: IdProvider
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      Lanes:
+        required: false
+        displayName: Lanes
+        type: LaneDTO[] 
+      Address:
+        required: false
+        displayName: Address
+        type: string
+      Latitude:
+        required: false
+        displayName: Address
+        type: string
+      Longitude:
+        required: false
+        displayName: Address
+        type: string
+      OperatorPath:
+        required: false
+        displayName: OperatorPath
+        type: string
+      TactileScreen:
+        required: false
+        displayName: TactileScreen
+        type: boolean
+      MACaddress:
+        required: false
+        displayName: MACaddress
+        type: string
+      IdUserCreate:
+        required: false
+        displayName: IdUserCreate
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdCompany:
+        required: false
+        displayName: IdCompany
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      ListAsociatedCampaigns:
+        required: false
+        displayName: OperatorPath
+        type: AdCampaignMachineDTO []
+  ProviderMachinesDTO:
+    displayName: ProviderMachinesDTO 
+    type: object
+    properties:
+      Provider:
+        required: true
+        displayName: Provider
+        type: ProviderDTO
+      Machines:
+        required: true
+        displayName: Machines
+        type: MachineDTO[]
+  StockProductDTO:
+    displayName: StockProductDTO
+    type: object
+    properties:
+      ProductDTO:
+        required: true
+        displayName: Provider
+        type: ProductDTO
+      Stock:
+        required: true
+        displayName: Provider
+        type: integer
+        format: int32
+  StockMachineDataDTO:
+    displayName: StockMachineDataDTO
+    type: object
+    properties:
+      Machine:
+        required: true
+        displayName: Machine
+        type: MachineDTO
+      StockProductDTO:
+        required: true
+        displayName: StockProducts
+        type: StockProductDTO[]
+  MultimediaElementDTO:
+    displayName: MultimediaElementDTO
+    type: object
+    properties:
+      Id:
+        required: false
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      Name:
+        required: false
+        displayName: Name
+        type: string
+      Description:
+        required: false
+        displayName: Description
+        type: string
+      MultimediaType:
+        required: false
+        displayName: MultimediaType
+        type: string
+      MultimediaContent:
+        required: false
+        displayName: MultimediaContent
+        type: string
+      DeleteDate:
+        required: false
+        displayName: DeleteDate
+        type: datetime
+      IdUserCreate:
+        required: false
+        displayName: IdUserCreate
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdCompany:
+        required: false
+        displayName: IdCompany
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+  ClientDTO:
+    displayName: ClientDTO
+    type: object
+    properties:
+      Id:
+        required: false
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      Name:
+        required: false
+        displayName: Name
+        type: string
+      InnovaCode:
+        required: false
+        displayName: InnovaCode
+        type: string
+  DeviceDTO:
+    displayName: DeviceDTO
+    type: object
+    properties:
+      Id:
+        required: false
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      Model:
+        required: false
+        displayName: Model
+        type: string
+      DeviceIdentifier:
+        required: false
+        displayName: DeviceIdentifier
+        type: string
+      OperatingSystem:
+        required: false
+        displayName: OperatingSystem
+        type: string
+      OSVersion:
+        required: false
+        displayName: OSVersion
+        type: string
+      IdUserDevice:
+        required: false
+        displayName: IdUserDevice
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      User:
+        required: false
+        displayName: User
+        type: UserInfoDTO
+  GuidObject:
+    displayName: GuidObject
+    type: object
+    properties:
+      Id:
+        required: false
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+  LaneMobileDTO:
+    displayName: DeviceDTO
+    type: object
+    properties:
+      CurrentStock:
+        required: true
+        displayName: CurrentStock
+        type: integer
+        format: int32
+      NumberLane:
+        required: true
+        displayName: NumberLane
+        type: integer
+        format: int32
+      ProductName:
+        required: false
+        displayName: ProductName
+        type: string
+      LaneState:
+        required: false
+        displayName: LaneState
+        type: string
+      Price:
+        required: true
+        displayName: CurrentStock
+        type: string
+      IdProduct:
+        required: false
+        displayName: IdProduct
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      ImageUrl:
+        required: false
+        displayName: ImageUrl
+        type: string
+      AdCampaignsAsociated:
+        required: false
+        displayName: AdCampaignsAsociated
+        type: GuidObject[]
+  QueueDTO:
+    displayName: DeviceDTO
+    type: object
+    properties:
+      QueueIN:
+        required: false
+        displayName: QueueIN
+        type: string
+      QueueOUT:
+        required: false
+        displayName: QueueOUT
+        type: string
+  MachineMobileDTO:
+    displayName: DeviceDTO
+    type: object
+    properties:
+      Machine:
+        required: true
+        displayName: Machine
+        type: MachineDTO
+      LanesMobileDTO:
+        required: true
+        displayName: Machine
+        type: LaneMobileDTO[]
+  ScanResponseMobileDTO:
+    displayName: DeviceDTO
+    type: object
+    properties:
+      Token:
+        required: true
+        displayName: Token
+        type: string
+      MachineMobileDTO:
+        required: true
+        displayName: MachineMobileDTO
+        type: MachineMobileDTO
+  CampaignTypeDTO:
+    displayName: CampaignTypeDTO
+    type: object
+    properties:
+      Id:
+        required: true
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      Name:
+        required: true
+        displayName: Name
+        type: string
+      Description:
+        required: true
+        displayName: Description
+        type: string
+      NumberPrincipalProduct:
+        required: false
+        displayName: NumberPrincipalProduct
+        type: number
+        format: int32
+      NumberPromotionalProduct:
+        required: false
+        displayName: NumberPromotionalProduct
+        type: number
+        format: int32
+      IdUserCreate:
+        required: false
+        displayName: IdUserCreate
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdCompany:
+        required: false
+        displayName: IdCompany
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+  AdCampaignDistributionListDTO:
+    displayName: AdCampaignDistributionListDTO
+    type: object
+    properties:
+      Id:
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdDistributionList:
+        displayName: IdDistributionList
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdAdCampaign:
+        displayName: IdAdCampaign
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+  DistributionListUserMobileDTO:
+    displayName: DistributionListUserMobileDTO
+    type: object
+    properties:
+      Id:
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdDistributionList:
+        displayName: IdDistributionList
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdUserMobile:
+        displayName: IdUserMobile
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$ 
+  DistributionListDTO:
+    displayName: AdCampaignMobileDTO
+    type: object
+    properties:
+      Id:
+        displayName: Id
+        description: The number Lane that we looking for
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      Name:
+        displayName: Name
+        description: The number Lane that we looking for
+        type: string
+      Description:
+        displayName: Description
+        description: The number Lane that we looking for
+        type: string
+      AllUsers:
+        displayName: AllUsers
+        description: boolean
+        type: boolean
+      SelectManualUsers:
+        displayName: SelectManualUsers
+        description: boolean
+        type: boolean
+      AgeRange:
+        displayName: AgeRange
+        description: boolean
+        type: boolean
+      AgeRangeMax:
+        displayName: AgeRangeMax
+        description: max range age
+        type: number
+        format: int32
+      AgeRangeMin:
+        displayName: AgeRangeMin
+        description: Min range age
+        type: number
+        format: int32
+      FemaleGenderRange:
+        displayName: FemaleGenderRange
+        description: boolean
+        type: boolean
+      MaleGenderRange:
+        displayName: MaleGenderRange
+        description: boolean
+        type: boolean
+      FacebookRange:
+        displayName: FacebookRange
+        description: boolean
+        type: boolean
+      GoogleRange:
+        displayName: GoogleRange
+        description: boolean
+        type: boolean
+      ApplicationMobileRegisterRange:
+        displayName: ApplicationMobileRegisterRange
+        description: boolean
+        type: boolean
+      IdUserCreate:
+        displayName: IdUserCreate
+        description: The number Lane that we looking for
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdCompany:
+        displayName: IdCompany
+        description: The number Lane that we looking for
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      ListAsociatedDistributionList:
+        required: false
+        displayName: ListAsociatedDistributionList
+        type: AdCampaignDistributionListDTO[]
+  AdCampaignDTO:
+    displayName: AdCampaignDTO
+    type: object
+    properties:
+      Id:
+        required: true
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      Name:
+        required: false
+        displayName: Name
+        type: string
+      Description:
+        required: false
+        displayName: Description
+        type: string
+      IdImageME:
+        required: false
+        displayName: IdImageME
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdVideoME:
+        required: false
+        displayName: IdVideoME
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdBannerME:
+        required: false
+        displayName: IdBannerME
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdCampaignType:
+        required: false
+        displayName: IdCampaignType
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      CampaignType:
+        required: false
+        displayName: CampaignType
+        type: CampaignTypeDTO
+      CampaingState:
+        required: false
+        type: number
+        format: int32	   
+      DeleteDate:
+        required: false
+        displayName: DeleteDate
+        type: datetime
+      IdProvider:
+        required: false
+        displayName: IdProvider
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      AutomaticActivation:
+        displayName: AutomaticActivation
+        description: boolean
+        type: boolean
+      StartDate:
+        required: false
+        displayName: StartDate
+        type: datetime
+      EndDate:
+        required: false
+        displayName: EndDate
+        type: datetime
+      IdUserCreate:
+        required: false
+        displayName: IdUserCreate
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdCompany:
+        required: false
+        displayName: IdCompany
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      ListAsociatedMachines:
+        required: false
+        displayName: ListAsociatedMachines
+        type: AdCampaignMachineDTO[]
+      ListAsociatedUser:
+        required: false
+        displayName: ListUserAsociated
+        type: AdCampaignUserAppMobileDTO[]      
+      ListAsociatedProducts:
+        required: false
+        displayName: ListProductsAsociated
+        type: AdCampaignProductDTO[]
+      ListAsociatedDistributionList:
+        required: false
+        displayName: ListAsociatedDistributionList
+        type: AdCampaignDistributionListDTO[]
+  AdCampaignUserAppMobileDTO:
+    displayName: AdCampaignUserAppMobileDTO
+    type: object
+    properties:
+      Id:
+        required: true
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdUserAppMobile:
+        required: true
+        displayName: IdUserAppMobile
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdCampaign:
+        required: true
+        displayName: IdCampaign
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+  UserAppMobileDTO:
+    displayName: UserAppMobileDTO
+    type: object
+    properties:
+      Id:
+        required: true
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      Name:
+        required: true
+        displayName: Name
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      Email:
+        required: true
+        displayName: Email
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+  AdCampaignProductMobileDTO:
+    displayName: AdCampaignProductMobileDTO
+    type: object
+    properties: 
+      IdsProducts:
+        required: true
+        displayName: Id
+        type: GuidObject[]
+      ProductType:
+        required: true
+        type: number
+        format: int32
+      RatingNumberProductCampaign:
+        required: true
+        displayName: RatingNumberProductCampaign
+        type: number
+        format: int32	   
+  AdCampaignProductDTO:
+    displayName: AdCampaignProductMobileDTO
+    type: object
+    properties:
+      Id:
+        required: true
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdProduct:
+        required: true
+        displayName: IdProduct
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdAdCampaign:
+        required: true
+        displayName: IdAdCampaign
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      ProductType:
+        required: true
+        displayName: ProductType
+        type: number
+        format: int32
+      RatingNumberProductCampaign:
+        required: true
+        displayName: RatingNumberProductCampaign
+        type: number
+        format: int32
+  AdCampaignMobileDTO:
+    displayName: AdCampaignMobileDTO
+    type: object
+    properties:
+      Id:
+        required: true
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      Name:
+        required: false
+        displayName: Name
+        type: string
+      Description:
+        required: false
+        displayName: Description
+        type: string
+      IdImageME:
+        required: false
+        displayName: IdImageME
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdVideoME:
+        required: false
+        displayName: IdVideoME
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdBannerME:
+        required: false
+        displayName: IdBannerME
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      ListAdCampaignProduct:
+        required: false
+        displayName: ListAdCampaignProduct
+        type: AdCampaignProductMobileDTO[]
+  PutNewAdCampaignsMachineLanesDTO:
+    displayName: AdCampaignMobileDTO
+    type: object
+    properties:
+      ListIdsSelectedLanes:
+        displayName: ListIdsSelectedLanes
+        description: The number Lane that we looking for
+        type: GuidObject []
+      IdCampaign:
+        displayName: IdCampaign
+        description: The number Lane that we looking for
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdMachine:
+        displayName: IdMachine
+        description: The number Lane that we looking for
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      NumberPromProduct:
+        displayName: NumberPromProduct
+        description: The number Lane that we looking for
+        type: integer
+        format: int32
+  IncidenceDTO:
+    displayName: IncidenceDTO
+    type: object
+    properties:
+      Id:
+        required: true
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IncidenceType:
+        required: false
+        displayName: IncidenceType
+        type: string
+      ReferenceMachine:
+        required: false
+        displayName: ReferenceMachine
+        type: string
+      IncidenceDate:
+        required: false
+        displayName: IncidenceDate
+        type: datetime
+      RecoveryType:
+        required: false
+        displayName: RecoveryType
+        type: string
+      NumberTrayOrLane:
+        required: false
+        displayName: NumberTrayOrLane
+        type: string
+      EmailUserAppGestion:
+        required: false
+        displayName: EmailUserAppGestion
+        type: string
+      NameProduct:
+        required: false
+        displayName: NameProduct
+        type: string
+      NameAdCampaign:
+        required: false
+        displayName: NameAdCampaign
+        type: string
+      EmailUserAppMobile:
+        required: false
+        displayName: EmailUserAppMobile
+        type: string
+      Price:
+        required: false
+        displayName: Price
+        type: string
+  StringDTO:
+    displayName: StringDTO
+    type: object
+    properties:
+      Cadena:
+        displayName: Cadena
+        type: string
+  PlaylistDTO:
+    displayName: PlaylistDTO
+    type: object
+    properties:
+      Id:
+        required: true
+        displayName: Id
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdVideo1:
+        required: false
+        displayName: IdVideo1
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdVideo2:
+        required: false
+        displayName: IdVideo2
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdVideo3:
+        required: false
+        displayName: IdVideo3
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdVideo4:
+        required: false
+        displayName: IdVideo4
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdVideo5:
+        required: false
+        displayName: IdVideo5
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdVideo6:
+        required: false
+        displayName: IdVideo6
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdVideo7:
+        required: false
+        displayName: IdVideo7
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdVideo8:
+        required: false
+        displayName: IdVideo8
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdVideo9:
+        required: false
+        displayName: IdVideo9
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      IdVideo10:
+        required: false
+        displayName: IdVideo10
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+/account:
+  /register:
+    post:
+      displayName: AccountRegister
+      description: Registers new user with the provided credentials.
+      body:
+        application/json:
+          displayName: body
+          description: user information to use for registration
+          type: RegisterDTO
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: UserInfoDTO
+        400:
+          description: authentication error
+          body:
+            application/json: 
+              displayName: response
+              description: successful operation
+    /registerFacebook:
+      post:
+        displayName: AccountRegister
+        description: Registers new user with the provided credentials.
+        body:
+          application/json:
+            displayName: body
+            description: user information to use for registration
+            type: UserInfoDTO
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: UserInfoDTO
+          400:
+            description: authentication error
+            body:
+              application/json: 
+                displayName: response
+                description: successful operation
+    /registerGoogle:
+      post:
+        displayName: AccountRegister
+        description: Registers new user with the provided credentials.
+        body:
+          application/json:
+            displayName: body
+            description: user information to use for registration
+            type: UserInfoDTO
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: UserInfoDTO
+          400:
+            description: authentication error
+            body:
+              application/json: 
+                displayName: response
+                description: successful operation
+    /registerFormApp:
+      post:
+        displayName: AccountRegister
+        description: Registers new user with the provided credentials.
+        body:
+          application/json:
+            displayName: body
+            description: user information to use for registration
+            type: UserInfoDTO
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: UserInfoDTO
+          400:
+            description: authentication error
+            body:
+              application/json: 
+                displayName: response
+                description: successful operation
+  /loginGestion:
+    post:
+      displayName: loginUserGestion
+      description: Logs user into the system
+      queryParameters:
+        Email:
+          required: true
+          displayName: email
+          description: The user name for login
+          type: string
+        Password:
+          required: false
+          displayName: password
+          description: The password for login in clear text
+          type: string
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: UserInfoDTO
+        400:
+          description: Invalid username/password supplied
+          body: {}
+  /login:
+    post:
+      displayName: loginUser
+      description: Logs user into the system
+      queryParameters:
+        Email:
+          required: true
+          displayName: email
+          description: The user name for login
+          type: string
+        Password:
+          required: false
+          displayName: password
+          description: The password for login in clear text
+          type: string
+        Token:
+          required: false
+          displayName: password
+          description: The token to security App
+          type: string
+        RegisterType:
+          required: false
+          displayName: registerType
+          description: type of register
+          type: string
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: TokenLogin
+              description: successful operation
+              type: string
+        400:
+          description: Invalid username/password supplied
+          body: {}
+  /user:
+    get:
+      displayName: GetAllUser
+      queryParameters:
+        page:
+          description: Specify the page that you want to retrieve
+          type: string
+          required: true
+        length:
+          description: Specify the amount of items that will be retrieved per page
+          type: string
+          default: '30'
+      responses:
+        206:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: UserInfoDTO[]
+        400:
+          description: Not exist users
+          body: {}      
+/machine:
+  get:
+    displayName: GetAllMachine
+    description: Get a List with all machines in database.
+    queryParameters:
+      page:
+        description: Specify the page that you want to retrieve
+        type: string
+        required: true
+      length:
+        description: Specify the amount of items that will be retrieved per page
+        type: string
+        default: '30'
+    responses:
+      206:
+        description: successful operation
+        body:
+          application/json:
+            displayName: response
+            description: successful operation
+            type: MachineDTO[]
+      400:
+        description: Invalid username/password supplied
+        body: {}
+  post:
+    displayName: CreateMachine
+    description: Create a new machine.
+    body:
+      application/json: 
+        type: MachineDTO
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json: 
+            displayName: response
+            description: successful operation
+            type: string
+      400:
+        description: Invalid username/password supplied
+        body: {}
+  /{machineId}: 
+    uriParameters:
+      machineId:
+        required: true
+        displayName: id
+        description: The machine id that we looking for. Data type uuid
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    get:
+      displayName: GetMachineById
+      description: Get a Machine which its Id passed in parameters.
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: MachineDTO
+        400:
+          description: Bad Request
+          body: {}
+    put:
+      displayName: UpdateMachineById
+      description: Update the machine configuration which its Id passed in parameters.
+      body:
+        application/json: 
+          type: MachineDTO
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: MachineDTO
+        400:
+          description: Bad Request
+          body: {}
+    delete:
+      displayName: DeleteMachineById
+      description: Delete a Machine which its Id passed in parameters.
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: MachineDTO
+        400:
+          description: Bad Request
+          body: {}
+    /machineStock:
+      uriParameters:
+        TokenLogin:
+          required: true
+          displayName: TokenLogin
+          description: The machine id that we looking for. Data type uuid
+          type: string
+      get:
+        displayName: GetMachineWithStock
+        description: Getmachine with stock
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: ScanResponseMobileDTO
+          400:
+            description: Bad Request
+            body: {}
+      /SendFullStock:
+        post:
+          displayName: SendFullStock
+          description: Send Full Stock machine configuration
+          body:
+            application/json: 
+              type: MachineDTO
+          responses:
+            200:
+            400:
+    /{adCampaignId}:
+      get:
+        displayName: GetAdCampaignByIdAndMachineId
+        description: Get a AdCampaign which its Id passed in parameters if this machine constains the adCampaign
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: AdCampaignMobileDTO
+          400:
+            description: Bad Request
+            body: {}
+    /lane:
+      get:
+        displayName: GetAllLanesMachine
+        description: Get a List with all machines in database.
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: LaneDTO[]
+          400:
+            description: Invalid username/password supplied
+            body: {}
+      post:
+        displayName: CreateLane
+        description: Create new lane configuration
+        body:
+          application/json: 
+            type: LaneDTO
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json: 
+                displayName: response
+                description: successful operation
+                type: string
+          400:
+            description: Lane not exist.
+            body: {}
+      /{numberLane}:
+        uriParameters:
+          numberLane:
+            required: true
+            displayName: numberLane
+            description: The number Lane that we looking for
+            type: integer
+            format: int32
+        get:
+          displayName: GetLaneByNumberLane
+          description: Get a Lane which its Id passed in parameters.
+          responses:
+            200:
+              description: successful operation
+              body:
+                application/json:
+                  displayName: response
+                  description: successful operation
+                  type: LaneDTO
+            400:
+              description: Bad Request
+              body: {}
+  /lane:
+    /{laneId}: 
+      uriParameters:
+        laneId:
+          required: true
+          displayName: id
+          description: The lane id that we looking for. Data type uuid
+          type: string
+      get:
+        displayName: GetLaneById
+        description: Get a Lane which its Id passed in parameters.
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: LaneDTO
+          400:
+            description: Bad Request
+            body: {}
+      put:
+        displayName: UpdateLaneById
+        description: Get a Lane which its Id passed in parameters.
+        body:
+          application/json: 
+            type: LaneDTO
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: LaneDTO
+          400:
+            description: Bad Request
+            body: {}
+      delete:
+        displayName: DeleteLaneById
+        description: Delete a Lane which its Id passed in parameters.
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: LaneDTO
+          400:
+           description: Bad Request
+           body: {}
+    /MACAddress:
+      /{macAddress}: 
+        uriParameters:
+          macAddress:
+            required: true
+            displayName: macAddress
+            description: The macAddress from machine
+            type: string
+        get:
+          displayName: GetAllLanesFromMACAddress
+          description: Get a List with all machines in database.
+          responses:
+            200:
+              description: successful operation
+              body:
+                application/json:
+                  displayName: response
+                  description: successful operation
+                  type: LaneDTO[]
+            400:
+              description:
+              body: {}
+  /stock:
+    get:
+      displayName: GetAllStocksMachines
+      description: Get a List with all stocks machines.
+      queryParameters:
+        page:
+          description: Specify the page that you want to retrieve
+          type: string
+          required: true
+        length:
+          description: Specify the amount of items that will be retrieved per page
+          type: string
+          default: '30'
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: StockMachineDataDTO[]
+        400:
+          description:
+          body: {}
+    /machineStockContainsReference:
+      get:
+        displayName: GetMachineStockContainsReference
+        description: Get a List with all stocks machines.
+        queryParameters:
+          Reference:
+            description: Reference
+            type: string
+            required: true
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: StockMachineDataDTO[]
+    /machineStockContainsName:
+      get:
+        displayName: GetMachineStockContainsName
+        description: Get a List with all stocks machines.
+        queryParameters:
+          Name:
+            description: Name
+            type: string
+            required: true
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: StockMachineDataDTO[]
+  /machineName:
+    /{machineName}:
+      uriParameters:
+        machineName:
+          required: true
+          displayName: Name
+          description: The Name of machine.
+          type: string
+      get:
+        displayName: GetMachineByName
+        description: Get a Machine which its Name passed in parameters.
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: MachineDTO
+          400:
+            description: Bad Request
+            body: {}
+  /machineNameContains:
+    /{machineName}:
+      uriParameters:
+        machineName:
+          required: true
+          displayName: Name
+          description: The Name of machine.
+          type: string
+      get:
+        displayName: GetMachinesContainsName
+        description: Get a Machine which its Name passed in parameters.
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: MachineDTO[]
+          400:
+            description: Bad Request
+            body: {}
+  /machineReferenceContains:
+    /{reference}:
+      uriParameters:
+        reference:
+          required: true
+          displayName: reference
+          description: The Name of machine.
+          type: string
+      get:
+        displayName: GetMachinesContainsName
+        description: Get a Machine which its Name passed in parameters.
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: MachineDTO[]
+          400:
+            description: Bad Request
+            body: {}
+/product:
+  get:
+    displayName: GetAllProducts
+    description: Get a List with all products in database.
+    queryParameters:
+      page:
+        description: Specify the page that you want to retrieve
+        type: string
+        required: true
+      length:
+        description: Specify the amount of items that will be retrieved per page
+        type: string
+        default: '30'
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json:
+            displayName: response
+            description: successful operation
+            type: ProductDTO[]
+      400:
+        description: Bad Request
+        body: {}
+  post:
+    displayName: CreateProduct
+    description: Create new product configuration
+    body:
+      application/json: 
+        type: ProductDTO
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json: 
+            displayName: response
+            description: successful operation
+            type: string
+      400:
+        description: Product not exist.
+        body: {}
+  /{productId}: 
+    uriParameters:
+      productId:
+        required: true
+        displayName: productId
+        description: The product id that we looking for. Data type uuid
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    get:
+      displayName: GetProductById
+      description: Get a Product which its Id passed in parameters.
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: ProductDTO
+        400:
+          description: Bad Request
+          body: {}
+    put:
+      displayName: UpdateProductById
+      description: Update a Product which its Id passed in parameters.
+      body:
+        application/json: 
+          type: ProductDTO
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: ProductDTO
+        400:
+          description: Bad Request
+          body: {}
+    delete:
+      displayName: DeleteProductById
+      description: Delete a Product which its Id passed in parameters.
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: ProductDTO
+        400:
+          description: Bad Request
+          body: {}
+  /productInnovaCode:
+    /{productInnovaCode}:
+      uriParameters:
+        productInnovaCode:
+          required: true
+          displayName: InnovaCode
+          description: The innovaCode is internal code Id of the product in Innova.
+          type: string
+      get:
+        displayName: GetProductByInnovaCode
+        description: Get a Product which its Name passed in parameters.
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: ProductDTO
+          400:
+            description: Bad Request
+            body: {}
+  /productContainsFilters:
+    get:
+      displayName: GetProductByInnovaCode
+      description: Get a Product which its Name passed in parameters.
+      queryParameters:
+        Description:
+          required: true
+          displayName: Description
+          description: The innovaCode is internal code Id of the product in Innova.
+          type: string
+        InnovaCode:
+          required: true
+          displayName: InnovaCode
+          description: The name of Product
+          type: string
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: ProductDTO[]
+        400:
+          description: Bad Request
+          body: {}
+/device:
+  get:
+    displayName: GetAllDevices
+    description: Get a List with all devices in database.
+    queryParameters:
+      page:
+        description: Specify the page that you want to retrieve
+        type: string
+        required: true
+      length:
+        description: Specify the amount of items that will be retrieved per page
+        type: string
+        default: '30'
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json:
+            displayName: response
+            description: successful operation
+            type: DeviceDTO[]
+      400:
+        description: Bad Request
+        body: {}
+/adCampaign:
+  get:
+    displayName: GetAllAdCampaigns
+    description: Get a List with all campaigns associated to user.
+    queryParameters:
+      page:
+        description: Specify the page that you want to retrieve
+        type: string
+        required: true
+      length:
+        description: Specify the amount of items that will be retrieved per page
+        type: string
+        default: '30'
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json:
+            displayName: response
+            description: successful operation
+            type: AdCampaignDTO[]
+      400:
+        description: Bad Request
+        body: {}
+  post:
+    displayName: CreateCampaign
+    description: Create new campaign
+    body:
+      application/json: 
+        type: AdCampaignDTO
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json: 
+            displayName: response
+            description: successful operation
+            type: AdCampaignDTO
+      400:
+        description: Campaign not exist.
+        body: {}
+  /{adCampaignId}:
+    uriParameters:
+      adCampaignId:
+        description: Specify with GUID format uiid campaign.
+        required: true
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    get:
+      displayName: GetAdCampaignById
+      description: Get a AdCampaign by id is passed in parameters.
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: AdCampaignDTO
+        400:
+          description: Bad Request
+          body: {}
+    delete:
+      displayName: DeleteCampaignById
+      description: Delete a Campaign which its Id passed in parameters.
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: AdCampaignDTO
+        400:
+          description: Bad Request
+          body: {}
+  /machineId{machineId}:
+    uriParameters:
+      machineId:
+        description: Specify with GUID format uiid machine.
+        required: true
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    get:
+      displayName: GetAdCampaignByIdMachine
+      description: Get a List of AdCampaign by id is passed in parameters.
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: AdCampaignDTO[]
+        400:
+          description: Bad Request
+          body: {}
+  /campaignType:
+    get:
+      displayName: GetAllCampaignTypes
+      description: Get a List with all campaigns types.
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: CampaignTypeDTO[]
+        400:
+          description: Bad Request
+          body: {}
+    put:
+      displayName: UpdateCampaignType
+      description: Add or Update a CampaignType which its Id passed in parameters.
+      body:
+        application/json: 
+          type: CampaignTypeDTO
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: CampaignTypeDTO
+        400:
+          description: Bad Request
+          body: {}
+    /{campaignTypeId}:
+      uriParameters:
+        campaignTypeId:
+          description: Specify with GUID format uiid campaign type.
+          required: true
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      get:
+        displayName: GetAllCampaignTypes
+        description: Get a List with all campaigns types.
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: CampaignTypeDTO
+          400:
+            description: Bad Request
+            body: {}
+      delete:
+        displayName: DeleteCampaignTypeById
+        description: Delete a CampaignType which its Id passed in parameters.
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: CampaignTypeDTO
+          400:
+            description: Bad Request
+            body: {}
+  /AdCampaignMachine:
+    get:
+      displayName: GetAllAdCampaignMachines
+      description: Get a List with all campaigns machines.
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: AdCampaignMachineDTO[]
+        400:
+          description: Bad Request
+          body: {}
+    post:
+      displayName: CreateAdCampaignMachine
+      description: Add or Update a AdCampaignMachine which its Id passed in parameters.
+      body:
+        application/json: 
+          type: AdCampaignMachineDTO
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: AdCampaignMachineDTO
+        400:
+          description: Bad Request
+          body: {}
+    /{AdCampaignIdMachineId}:
+      uriParameters:
+        idAdCampaign:
+          description: Specify with GUID format uiid campaign.
+          required: true
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+        idMachine:
+          description: Specify with GUID format uiid machine.
+          required: true
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      get:
+        displayName: GetByAdCampaignIdMachineId
+        description: Get a List with all campaign machines associated to campaign.
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: AdCampaignMachineDTO
+          400:
+            description: Bad Request
+            body: {}
+    /{AdCampaignMachineId}:
+      get:
+        displayName: GetByAdCampaignMachineId
+        description: Get a List with all campaign machines associated to campaign.
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: AdCampaignMachineDTO
+          400:
+            description: Bad Request
+            body: {}
+      delete:
+        displayName: DeleteAdCampaignMachineById
+        description: Delete a AdCampaignMachine associated to campaign.
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: number
+                format: int32
+          400:
+            description: Bad Request
+            body: {}
+ 
+    /CampaignUser:
+      get:
+        displayName: GetAllCampaignUsers
+        description: Get a List with all campaigns users.
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: AdCampaignUserAppMobileDTO[]
+          400:
+            description: Bad Request
+            body: {}
+    /{adCampaignsUserId}:
+      get:
+        displayName: GetCampaignsUserById
+        description: Get a List with all campaigns for a user.
+        queryParameters:
+          idUser:
+            description: Specify with GUID format uiid user.
+            required: true
+            type: string
+            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+        responses:
+          200:
+            description: successful operation
+            body:
+              application/json:
+                displayName: response
+                description: successful operation
+                type: AdCampaignUserAppMobileDTO
+          400:
+            description: Bad Request
+            body: {}
+/AdCampaignMachineLane:
+  delete:
+    displayName: DeleteAdCamapignMachineLane
+    description: Get a multimediaElement.
+    queryParameters:
+      idAdCampaign:
+        description: Specify with GUID format uiid campaign.
+        required: true
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      idMachine:
+        description: Specify with GUID format uiid machine.
+        required: true
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      numberPromProd:
+        required: true
+        type: string
+    responses:
+      200:
+        description: successful operation
+        body: {}
+      400:
+        description: Bad Request
+        body: {}    
+/MultimediaElement:
+  get:
+    displayName: GetAllMultimediaElement
+    description: Get a multimediaElement.
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json:
+            displayName: response
+            description: successful operation
+            type: MultimediaElementDTO[]
+      400:
+        description: Bad Request
+        body: {}
+  put:
+    displayName: UpdateMultimediaElement
+    description: Add or Update a multimediaElement.
+    body:
+      application/json: 
+        type: MultimediaElementDTO
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json:
+            displayName: response
+            description: successful operation
+            type: MultimediaElementDTO
+      400:
+        description: Bad Request
+        body: {}
+  /{multimediaElementId}:
+    get:
+      displayName: GetAllMultimediaElements
+      description: Get a List with all multimediaElement.
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: MultimediaElementDTO
+        400:
+          description: Bad Request
+          body: {}
+    delete:
+      displayName: DeleteMultimediaElementById
+      description: Delete a multimediaElement which its Id passed in parameters.
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: number
+              format: int32
+        400:
+          description: Bad Request
+          body: {}
+/UserAppMobile:
+  get:
+    displayName: GetAllUserAppMobile
+    description: Get a List with all UserAppMobile.
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json:
+            displayName: response
+            description: successful operation
+            type: UserAppMobileDTO[]
+      400:
+        description: Bad Request
+        body: {}
+  /SendEmailToRecoverPassword:
+    uriParameters:
+      email:
+        description: Specify with email.
+        required: true
+        type: string
+    get:
+      displayName: SendEmailToRecoverPassword
+      description: Send email to user for recovery password.
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: boolean
+        400:
+          description: Bad Request
+          body: {}
+/UserAppGestion:
+  get:
+    displayName: GetAllUserAppGestion
+    description: Get a List with all UserAppGestion.
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json:
+            displayName: response
+            description: successful operation
+            type: UserInfoDTO[]
+      400:
+        description: Bad Request
+        body: {}
+  post:
+    displayName: CreateCampaign
+    description: Create new campaign
+    body:
+      application/json: 
+        type: UserInfoDTO
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json: 
+            displayName: response
+            description: successful operation
+            type: UserInfoDTO
+      400:
+        description: Campaign not exist.
+        body: {}
+  /{userAppGestionEmail}:
+    uriParameters:
+      email:
+        description: Specify with email.
+        required: true
+        type: string
+    get:
+      displayName: GetUserAppGestionByEmail
+      description: Get a entity for a user by the mail.
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: UserInfoDTO
+        400:
+          description: Bad Request
+          body: {}
+  /{userAppGestionId}:
+    uriParameters:
+      userAppGestionId:
+        description: Specify with GUID format uiid campaign.
+        required: true
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    delete:
+      displayName: DeleteUserAppGestionById
+      description: Delete a user which its Id passed in parameters.
+      responses:
+        200:
+          description: successful operation
+          body: {}
+        400:
+          description: Bad Request
+          body: {}
+/AdCampaignsAsociatedMachine:
+  put:
+    displayName: GetMachineWithCampaignsAsociatedLanes
+    description: Save ad campaigns asociated with the lanes
+    body:
+      application/json:
+        type: PutNewAdCampaignsMachineLanesDTO
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json:
+            displayName: response
+            description: successful operation
+            type: MachineDTO
+      400:
+        description: Bad Request
+        body: {}
+  delete:
+    displayName: DeleteByAdCampaignIdMachineId
+    description: Get a List with all campaign machines associated to campaign.
+    queryParameters:
+      idAdCampaign:
+        description: Specify with GUID format uiid campaign.
+        required: true
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      idMachine:
+        description: Specify with GUID format uiid machine.
+        required: true
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    responses:
+      200:
+        description: successful operation
+        body: {}
+      400:
+        description: Bad Request
+        body: {}
+/Provider:
+  get:
+    displayName: GetAllProviders
+    description: Get a List with all providers.
+    queryParameters:
+      page:
+        description: Specify the page that you want to retrieve
+        type: string
+        required: true
+      length:
+        description: Specify the amount of items that will be retrieved per page
+        type: string
+        default: '30'
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json:
+            displayName: response
+            description: successful operation
+            type: ProviderDTO[]
+      400:
+        description: Bad Request
+        body: {}
+  post:
+    displayName: CreateCampaign
+    description: Create new campaign
+    body:
+      application/json: 
+        type: ProviderDTO
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json: 
+            displayName: response
+            description: successful operation
+            type: ProviderDTO
+      400:
+        description: Campaign not exist.
+        body: {}
+  /{providerId}:
+    uriParameters:
+      providerId:
+        description: Specify with GUID format uiid campaign.
+        required: true
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    get:
+      displayName: GetProviderById
+      description: Get a AdCampaign by id is passed in parameters.
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: ProviderDTO
+        400:
+          description: Bad Request
+          body: {}
+    delete:
+      displayName: DeleteCampaignById
+      description: Delete a Campaign which its Id passed in parameters.
+      responses:
+        200:
+          description: successful operation
+          body: {}
+        400:
+          description: Bad Request
+          body: {}
+  /ProviderContainsFilters:
+    get:
+      displayName: GetMachineStockContainsReference
+      description: Get a List with all stocks machines.
+      queryParameters:
+        Name:
+          description: Name
+          type: string
+          required: true
+        Reference:
+          description: Reference
+          type: string
+          required: true
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: ProviderDTO[]
+/Company:
+  get:
+    displayName: GetAllCompanies
+    description: Get a List with all Companies.
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json:
+            displayName: response
+            description: successful operation
+            type: CompanyDTO[]
+      400:
+        description: Bad Request
+        body: {}
+  post:
+    displayName: CreateCompany
+    description: Create new Company
+    body:
+      application/json: 
+        type: CompanyDTO
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json: 
+            displayName: response
+            description: successful operation
+            type: CompanyDTO
+      400:
+        description: Company not exist.
+        body: {}
+  /{companyId}:
+    uriParameters:
+      companyId:
+        description: Specify with GUID format uiid Company.
+        required: true
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    get:
+      displayName: GetCompanyById
+      description: Get a AdCampaign by id is passed in parameters.
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: CompanyDTO
+        400:
+          description: Bad Request
+          body: {}
+    delete:
+      displayName: DeleteCompanyById
+      description: Delete a Company which its Id passed in parameters.
+      responses:
+        200:
+          description: successful operation
+          body: {}
+        400:
+          description: Bad Request
+          body: {}
+/Tactil:
+  /Stock:
+    get:
+      displayName: GetStocktoTactilByMachineId
+      description: Get a MAchine Stock by this id is passed in parameters.
+      queryParameters:
+        machineId:
+          description: Specify with GUID format uiid Machine.
+          required: true
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: StockProductDTO[]
+  /FullStock:
+    get:
+      displayName: GetStockDataMachineByMachineId
+      description: Get a Full Machine Stock by this id is passed in parameters.
+      queryParameters:
+        machineId:
+          description: Specify with GUID format uiid Machine.
+          required: true
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: StockMachineDataDTO
+/DistributionList:
+  get:
+    displayName: GetAllDistributionLists
+    description: Get a list of distribution list
+    queryParameters:
+      page:
+        description: Specify the page that you want to retrieve
+        type: string
+        required: true
+      length:
+        description: Specify the amount of items that will be retrieved per page
+        type: string
+        default: '30'
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json:
+            displayName: response
+            description: successful operation
+            type: DistributionListDTO[]
+  post:
+    displayName: CreateDistributionList
+    description: Create new Company
+    body:
+      application/json: 
+        type: DistributionListDTO
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json: 
+            displayName: response
+            description: successful operation
+            type: DistributionListDTO
+      400:
+        description: DistributionList not exist.
+        body: {}
+  /{distributionListId}:
+    uriParameters:
+      distributionListId:
+        description: Specify with GUID format uiid Company.
+        required: true
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    get:
+      displayName: GetDistributionListById
+      description: Get a DistributionList by id is passed in parameters.
+      responses:
+        200:
+          description: successful operation
+          body:
+            application/json:
+              displayName: response
+              description: successful operation
+              type: DistributionListDTO
+        400:
+          description: Bad Request
+          body: {}
+    delete:
+      displayName: DeleteDistributionListById
+      description: Delete a DistributionList which its Id passed in parameters.
+      responses:
+        200:
+          description: successful operation
+          body: {}
+        400:
+          description: Bad Request
+          body: {}
+/Incidences:
+  get:
+    displayName: GetAllIncidences
+    description: Get a list of incidences
+    queryParameters:
+      page:
+        description: Specify the page that you want to retrieve
+        type: string
+        required: true
+      length:
+        description: Specify the amount of items that will be retrieved per page
+        type: string
+        default: '30'
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json:
+            displayName: response
+            description: successful operation
+            type: IncidenceDTO[]
+/PlayList:
+  get:
+    displayName: GetStringNameVideos
+    description: Get a string with the names of playlist tactile videos
+    queryParameters:
+      machineId:
+        description: Specify with GUID format uiid machine.
+        required: true
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    responses:
+      200:
+        description: successful operation
+        body:
+          application/json:
+            type: StringDTO

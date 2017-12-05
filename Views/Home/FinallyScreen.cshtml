@@ -1,0 +1,22 @@
+﻿<div class="borde FinalScreen">
+    <a href="/Home/StartBuy">
+        <video muted autoplay="autoplay" src="~/Content/TestVideos/PruebaBubbles.mp4" typeof="mp4" loop="loop"></video>
+        <div class="thanks">
+            <p><b>¡Gracias por su compra!</b></p>
+            <p>Recoja su Producto</p>
+        </div>
+        
+
+        
+    </a>
+</div>
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () { changePage(); }, 8000);
+        });
+        function changePage() {
+            var url = "@Html.Raw(Url.Action("Index", "Home"))";
+            document.location.href = url;
+        }
+    </script>
+

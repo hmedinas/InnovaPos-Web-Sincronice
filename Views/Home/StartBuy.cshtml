@@ -1,0 +1,192 @@
+﻿@using Innova.Tactil.InnovaPosWebAPI.Models
+@using Innova.Tactil.Models
+@using System
+
+@model List<Innova.Tactil.InnovaPosWebAPI.Models.StockProductDTO>
+
+@{
+    ViewBag.Title = "StartBuy";
+    List<IdPriceProduct> prices = ViewBag.Prices;
+    List<IdCarril> carriles = ViewBag.Carriles;
+}
+@{
+    foreach(var item in carriles)
+    {
+        <input type="hidden" id="@item.IdProduct" value="@item.Carril" />
+    }
+}
+
+<div class="SelectProduct">
+    <div class="carrousel swiper-container gallery-thumbs">
+        <div class="swiper-wrapper">
+            @{
+                if (Model != null && Model.Count > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        if (item.Stock > 0)
+                        {
+                            <div id="@item.ProductDTO.Id" class="swiper-slide" onclick="OpenProduct(@Json.Encode(item.ProductDTO), '@item.ProductDTO.Id')">
+                                <img src="@item.ProductDTO.ImageURL" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div id="@item.ProductDTO.Id" class="swiper-slide" onclick="OpenSoldOut()">
+                                <img src="@item.ProductDTO.ImageURL" />
+                            </div>
+                        }
+                    }
+                }
+            }
+        </div>
+    </div>
+
+    <div class="productDiv swiper-container gallery-top">
+        <div id="ourAlert" class="alert inputNoVisto" style="z-index:99999999999;">
+            <div>
+                <p id="mensajeAlert"></p>
+                <button onclick="CloseAlert()">Aceptar</button>
+            </div>
+        </div>
+        <div id="product" class="product swiper-wrapper">
+            <h2>Pulse sobre el producto deseado</h2>        
+        </div>
+        
+    </div>
+    
+    
+</div>
+@*<div class="modal-wrapper" id="popup">
+    <div class="popup-contenedor">
+        <div id="screenBuyCancel"></div>
+        <a class="popup-cerrar" href="#"><i class="dimaticon cross"></i></a>
+    </div>
+</div>*@
+<script>
+    var activity;
+    $(document).ready(function () {
+        activity = false;
+        setTimeout(function () { if (!activity) changePage(); }, 90000);
+    });
+    function changePage() {
+        var url = "@Html.Raw(Url.Action("Index", "Home"))";
+        document.location.href = url;
+    }  
+</script>
+<script>
+    function viewInfo() {
+        $('#InfoMobileProduct').show(300);
+    }
+    function closeInfo() {
+        $('#InfoMobileProduct').hide(300);
+    }
+    function SendPrepare(productoId) {
+        var carril = document.getElementById(productoId).value;
+        console.log(carril);
+        var URL='Carril='+carril.substring(0, 1)+','+ carril.substring(1, 1)
+        $.getJSON( 'http://127.0.0.1:5000/api/Prepare?Carril='+carril.substring(0, 1)+','+ carril.substring(1, 2));
+    }
+    function OpenProduct(Json, productId) {
+        SendPrepare(productId);
+        $.ajax({
+            type: "post",
+            beforeSend: showLoading(),
+            url: "/Home/GetPartialOpenProduct",
+            data: { product: Json },
+            success: function (datos) {
+                if (datos == null) {
+                    //document.location.href = "#";
+                    document.location.href = "/Home/StartBuy";
+                    activity = true;
+                }
+                else if (datos != null) {
+                    document.getElementById("product").innerHTML = datos;
+                    activity = true;
+                    //document.location.href = "#popup";
+                    //$("#popup").css("visibility", "visible");
+                }
+                endLoading();
+            }
+        });
+    }
+    function OpenAlert(mensaje) {
+        document.getElementById("mensajeAlert").innerHTML = mensaje;
+        document.getElementById("ourAlert").classList.remove("inputNoVisto");
+    }
+    function CloseAlert() {
+        document.getElementById("ourAlert").classList.add("inputNoVisto");
+        document.getElementById("mensajeAlert").innerHTML = "";
+    }
+    function OpenSoldOut() {
+        OpenAlert("¡¡ No quedan existencias !!");
+    }
+    function CloseBuy() {
+        $.getJSON('http://127.0.0.1:5000/api/Finish');
+        var url = "@Html.Raw(Url.Action("Index", "Home"))";
+        document.location.href = url;
+       
+    }
+    function BuyProduct(productId){
+        $.ajax({
+            url: '/Home/BuyProduct',
+            beforeSend: showLoading(),
+            type: 'get',
+            data: { idProduct: productId },
+            success: function (datos) {
+                if (datos == "OK") {
+                    var url = "@Html.Raw(Url.Action("FinallyScreen", "Home"))";
+                    document.location.href = url;
+                    activity = true;
+                }
+                else {
+                    OpenAlert(datos);
+                }
+                endLoading();
+            }
+        });
+    }
+
+
+
+
+</script>
+<script src="../Content/swiper.js"></script>
+<script>
+
+    /**********SWIPER**********/
+
+    var galleryTop = new Swiper('.gallery-top', {
+        spaceBetween: 0,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+    var galleryThumbs = new Swiper('.gallery-thumbs', {
+      spaceBetween: 0,
+      centeredSlides: false,
+      slidesPerView: 'auto',
+      touchRatio: 0.2,
+      slideToClickedSlide: false,
+      direction: 'horizontal',
+      navigation: {
+          nextEl: '.chevron-down',
+          prevEl: '.chevron-up',
+      },
+    });
+    galleryTop.controller.control = galleryThumbs;
+    galleryThumbs.controller.control = galleryTop;
+
+    $(document).ready(function () {
+        $(".swiper-slide").removeClass("swiper-slide-active");
+
+        $(".swiper-slide").click(function () {
+            $(".swiper-slide").removeClass("swiper-slide-active");
+            $(this).addClass("swiper-slide-active");
+        });
+    });
+   
+
+</script>
+

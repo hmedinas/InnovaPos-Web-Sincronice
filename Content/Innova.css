@@ -1,0 +1,573 @@
+﻿@font-face {
+    font-family: Roboto;
+    src: url(fonts/Roboto-Regular.ttf) format('truetype');
+    
+}
+
+/*@font-face {
+    font-family: 'Dimaticons';
+    font-weight: 300;
+    font-style: normal;
+    src: url('../Dimaticons/Dimaticons.ttf') format('truetype');
+
+}*/
+
+/*RESET*/
+
+
+
+*{
+    padding:0;
+    margin:0;   
+    box-sizing:border-box;
+    
+}
+
+li{
+    list-style:none;
+}
+
+a, a:hover{
+    text-decoration:none;
+}
+body{
+    font-family:Roboto, sans-serif;
+}
+
+
+/*HOME*/
+
+
+html, body{
+    height:100%;
+    overflow: hidden;
+}
+.container{
+    max-width:none;
+    padding:0;
+    height:100%;
+}
+
+video{
+    width: auto;
+    height: 100%;
+    position: relative;
+    left: -20px;
+}
+
+.titleVideo{
+    color: #fff;
+    font-weight: 900;
+    text-align: center;
+    font-family: inherit;
+    font-size: 50px;
+    margin:20px auto;
+    width:70%;
+    padding:40px;
+    background: url('img/wavecut_red.png') repeat;
+    border-radius:20px;
+    box-shadow:3px 3px 5px rgba(0,0,0,.3);
+    position: absolute;
+    top: calc(50% - 120px);
+    right: 0;
+    left: 0;
+    transition:all .2s;
+    border:3px solid #dd0000;
+}
+
+.titleVideo:hover{
+    background:white;
+    color:#dd0000;
+    
+}
+
+.borde{
+    width:100%;
+    height:100%;
+    border:50px solid #dd0000;
+    background:transparent;
+    overflow:hidden
+}
+
+.borde a{
+    height: 100%;
+    display: block;
+}
+
+
+
+/*Ana*/
+
+.inputNoVisto{
+	display: none !important;
+}
+
+.Botonera{
+       text-align: center;
+}
+
+.Botonera a{
+        text-align: center;
+    background: url('img/wavecut_red.png') repeat;
+    color: white;
+    font-weight: bold;
+    width: 100%;
+    height:250px;
+    display: block;
+    font-size: 35px;
+    cursor: pointer;
+    padding: 30px;
+    margin:25px 0 0;
+    border-radius:10px;
+    border:3px solid #dd0000;
+}
+.Botonera a:hover{
+    background:white;
+    color:#dd0000;
+}
+.Botonera a i{
+    font-size:100px;
+    font-weight:normal;
+    display:block;
+}
+.Botonera a span{
+    margin: 20px 0;
+    display: block;
+}
+.VentanaProducto {
+    background: url('img/debut_light.png') repeat;
+    position:relative
+}
+/*.VentanaProducto:before {
+    content:"";
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    display:block;
+    z-index:2;
+    background: url('img/sombra.png') no-repeat;
+    background-size: cover;
+    opacity: .2;
+}*/
+.VentanaProducto .image{
+    height: 1400px;
+    text-align: center;
+    padding: 50px;
+    width:70%;
+    float:left
+}
+.VentanaProducto .image img{
+    height: 100%;
+}
+
+
+.details{
+   font-size: 50px;
+    text-align: center;
+    display:block;
+    width:100%;
+    padding: 20px 0;
+    background: url('img/wavecut_red.png') repeat;
+    color: white;
+    font-weight: bold;
+    box-shadow:0 5px 5px rgba(0,0,0,.3);
+}
+.details a{
+        position: absolute;
+    left: 30px;
+    font-size: 60px;
+    font-weight: normal;
+    background: #111;
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    top: 40px;
+}
+.details h3{
+    font-size:50px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+
+/*POPUP*/
+
+#popup{
+    visibility:hidden;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgba(0,0,0,.8);
+    z-index: 9;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.popup-contenedor{
+    background:#fff;
+    width:60%;
+    position:relative;
+    border-radius: 10px;
+}
+
+.popup-cerrar{
+    position: absolute;
+    font-size: 45px;
+    background: url('img/wavecut_red.png') repeat;
+    padding: 30px;
+    width: 100px;
+    height: 100px;
+    line-height:40px;
+    text-align: center;
+    border-radius: 50%;
+    top:-30px;
+    right:-30px;
+    color: #fff;
+    z-index: 1;
+    border:3px solid #dd0000
+}
+.popup-cerrar:hover{
+    
+    background: #fff;
+    color:#dd0000;
+}
+.popup-cerrar i{
+     position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+
+.alert{
+       width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.9);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    
+}   
+.alert > div{
+    width:100%
+}
+.alert p{
+        font-size: 60px;
+    color: #fff;
+    text-align: center;
+    width: 60%;
+    margin: 0 auto;
+}
+.alert button{
+        text-align: center;
+    background: url('img/wavecut_red.png') repeat;
+    color: white;
+    font-weight: bold;
+    width: 50%;
+    display: block;
+    font-size: 35px;
+    cursor: pointer;
+    padding: 30px;
+    margin:45px auto;
+    border-radius:10px;
+    border:3px solid #dd0000;
+}
+.alert button:hover{
+    background:white;
+    color:#dd0000;
+}
+
+
+/****SELECT PRODUCT****/
+.SelectProduct{
+    overflow:hidden;
+    height: 100%;
+    position:relative
+}
+.SelectProduct h2{
+    text-align:center;
+    font-size:40px;
+       margin: 50px auto;
+    width: 100%;
+}
+
+.SelectProduct > div{
+
+}
+   
+
+.productDiv {
+    width: 100%;
+    height:85%;
+    position: relative;
+   
+    
+}
+.product {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+    .product > div {
+       padding:50px;
+        width: 100% !important;
+        position: relative;
+        overflow: hidden;
+    }
+
+.productDiv span:hover{
+    background:#fff;
+    color:#dd0000;
+    
+}
+
+.productDiv span.chevron-left{
+    left:20px;
+    box-shadow:3px -3px 5px rgba(0,0,0,.3);
+}
+
+.productDiv span.chevron-right{
+    right:20px;
+    box-shadow:-3px 3px 5px rgba(0,0,0,.3);
+}
+  .productDiv span.chevron-left:before, .productDiv span.chevron-right:before{
+    top: 25px;
+    position:relative
+}  
+    
+.product img{
+   height:90%
+        
+}
+.PriceBox{
+    border: 5px solid #dd0000;
+    
+    height:150px;
+    box-shadow:3px 3px 5px rgba(0,0,0,.3);
+}
+.InfoBox{
+     border-radius: 10px;
+    
+    background: url('img/wavecut_red.png') repeat;
+    box-shadow:3px 3px 5px rgba(0,0,0,.3);
+    text-align:center
+}
+.InfoBox i{
+    color:#fff;
+    font-size:100px;
+    line-height:150px
+}
+
+.Price{
+   font-size: 80px;
+    text-align: center;
+    font-weight: 900;
+    color: #111;
+        line-height: 150px;
+    background: white;
+    height: 100%;
+}
+
+.carrousel {
+    width: 100%;
+    height:15%;
+    /*background: url('img/wavecut_red.png') repeat;*/
+    overflow: hidden;
+    position: relative;
+    box-shadow: -5px 0 5px rgba(0,0,0,.2);
+    border:12px solid #dd0000;
+}
+
+.carrousel .swiper-wrapper{
+    display:flex;
+    justify-content:space-around;
+    padding:20px;
+    background: url('img/debut_light.png') repeat;
+}
+
+.carrousel > div, .carrousel > div > div{
+    height:100%;
+    position:relative;
+}
+.carrousel > div img {
+    height: 100%;
+    width:auto;
+}
+.carrousel span{
+    position: absolute;
+    font-size: 25px;
+    text-align: center;
+    border-radius: 50%;
+    left:0;
+    right:0;
+    margin:0 auto;
+    color: #fff;
+    z-index: 1;
+    transition:padding .5s;
+}
+
+
+.carrousel span.chevron-up{
+       top: 0;
+    padding: 40px 0;
+}
+.carrousel span.chevron-down{
+       bottom: 0;
+    padding: 40px 0;
+}
+
+/*.gallery-thumbs .swiper-slide {
+      
+      opacity: 0.4;
+    }
+    .gallery-thumbs .swiper-slide-active {
+      opacity: 1;
+    }*/
+
+.swiper-button-disabled{
+    opacity:.4
+}
+
+
+.galleryBox{
+        height: 360px;
+    position: absolute;
+    background: white;
+    z-index: 0;
+    right: 0;
+    top: calc(50% - 180px);
+    width: 100%;
+    border: 5px solid #444;
+}
+
+@keyframes opacity{
+    from{opacity:0}
+
+    to{opacity:1}
+}
+
+.Botones{
+    float:right;
+    width: 30%;
+    padding:100px 0;
+    animation:opacity .2s;
+}
+.Botones > div{
+    
+    width: 100%;
+}
+
+.swiper-slide{
+    opacity:.5;
+    display: flex;
+    align-items: flex-end;
+}
+.swiper-slide-active{
+    opacity:1
+}
+
+@keyframes bottom{
+    from{bottom:-90px}
+    to{bottom:-60px}
+}
+
+.swiper-slide-active:before {
+    content: "";
+    width: 50px;
+    height: 50px;
+    background: #dd0000;
+    display: block;
+    position: absolute;
+    transform: rotate(45deg);
+    bottom: -60px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    animation:bottom .5s ease-out;
+}
+
+
+
+/*****FINAL SCREEN******/
+
+.FinalScreen .thanks{
+   position: absolute;
+    top: 42%;
+    font-size: 70px;
+    text-align: center;
+    width: 100%;
+    left: 0;
+}
+.thanks p{
+  color:#fff;
+  margin:50px 0
+}
+
+/*******LOADING********/
+
+#promptMessage{
+    width:100%;
+    height:100%;
+    position:absolute;
+    left:0;
+    top:0;
+    z-index:99999;
+    background:rgba(255,255,255,.8);
+        display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/******POPUP*******/
+
+.PopupInfo {
+    position: fixed !important;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,.9);
+    z-index: 9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.PopupInfo > div {
+    background: white;
+    padding: 30px;
+    width: 600px;
+    text-align: center;
+    border-radius: 4px;
+    position: relative;
+}
+.PopupInfo p {
+    font-size: 24px;
+    margin:20px 0 0;
+}
+.PopupInfo a {
+    font-size: 24px;
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    background: #dd0000;
+    border-radius: 50%;
+    DISPLAY: FLEX;
+    align-items: center;
+    justify-content: center;
+    border:2px solid #dd0000
+}
+.PopupInfo a:hover{
+    background:white;
+    color:#dd0000;    
+}

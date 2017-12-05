@@ -1,0 +1,49 @@
+﻿@using Innova.Tactil.InnovaPosWebAPI.Models
+@using Innova.Tactil.Models
+
+@model Innova.Tactil.InnovaPosWebAPI.Models.ProductDTO
+
+@{
+    List<IdPriceProduct> prices = ViewBag.Prices;
+}
+<div id="ProductDetails" class="details">
+    <a onclick="viewInfo()">
+        <i class="dimaticon info"></i>
+    </a>
+    <h3>@Model.Description</h3>
+</div>
+<div id="InfoMobileProduct" class="PopupInfo" style="display:none;">
+    
+    <div>
+        <a onclick="closeInfo()"><i class="dimaticon cross"></i></a>
+        <p><b>INFORMACIÓN DEL PRODUCTO SELECCIONADO</b></p>
+        <p>@Model.MobileDescription</p>
+    </div>
+</div>
+<div class="VentanaProducto">
+    <div class="Botones">
+        <div class="PriceBox">
+            <p class="Price">@(prices.First(p => p.IdProduct == Model.Id).Price == (double)-1 ? "vendido" : prices.First(p => p.IdProduct == Model.Id).Price + "€") </p>
+        </div>
+        @*<div class="InfoBox">
+                <i class="dimaticon info"></i>
+            </div>*@
+        <div class="Botonera">
+            <a onclick="BuyProduct('@Model.Id')">
+                <i class="dimaticon shopping-cart"></i>
+                <span>COMPRAR</span>
+            </a>
+
+            <a onclick="CloseBuy()">
+                <i class="dimaticon coins"></i>
+                <span>DEVOLUCIÓN</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="image">
+        <img src="@Model.ImageURL" />
+    </div>
+
+
+</div>
